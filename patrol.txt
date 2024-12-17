@@ -1,0 +1,8 @@
+Earth Mars 50
+Earth Venus 30
+Venus Saturn 80
+Earth Saturn 500
+Mars Jupiter 200
+Jupiter Venus 60
+Saturn Neptune 150
+Neptune Mars 300
