@@ -1,30 +1,33 @@
 import java.io.*;
 import java.util.*;
 public class Patrol {
-    public static class edge {
+    public static class Edge {
         String planet1;
         String planet2;
         int cost;
-        public edge(String planet1, String planet2, int cost) {
+        public Edge(String planet1, String planet2, int cost) {
             this.planet1 = planet1;
             this.planet2 = planet2;
             this.cost = cost;
         }
+        public String toString() {
+            return "(" + planet1 + ", " + planet2 + ", " + cost + ")";
+        }
     }
-    public static class Find {
-        private Map<String, String> parent;
-        private Map<String, Integer> position;
-        public Find() {
+    public static class UnionFind {
+        private final Map<String, String> parent;
+        private final Map<String, Integer> rank;
+        public UnionFind() {
             this.parent = new HashMap<>();
-            this.position = new HashMap<>();
+            this.rank = new HashMap<>();
         }
         public String find(String planet) {
             if (!parent.containsKey(planet)) {
-                parent.put(planet, planet); 
-                position.put(planet, 0); 
+                parent.put(planet, planet);
+                rank.put(planet, 0);
             }
             if (!planet.equals(parent.get(planet))) {
-                parent.put(planet, find(parent.get(planet))); 
+                parent.put(planet, find(parent.get(planet)));
             }
             return parent.get(planet);
         }
@@ -32,21 +35,22 @@ public class Patrol {
             String root1 = find(planet1);
             String root2 = find(planet2);
             if (!root1.equals(root2)) {
-                if (position.get(root1) > position.get(root2)) {
+                if (rank.get(root1) > rank.get(root2)) {
                     parent.put(root2, root1);
-                } else if (position.get(root1) < position.get(root2)) {
+                } else if (rank.get(root1) < rank.get(root2)) {
                     parent.put(root1, root2);
                 } else {
                     parent.put(root2, root1);
-                    position.put(root1, position.get(root1) + 1);
+                    rank.put(root1, rank.get(root1) + 1);
                 }
             }
         }
     }
-    public List<Edge> File(String file) throws IOException {
+    public List<Edge> EdgesFromFile(String filePath) throws IOException {
         List<Edge> edges = new ArrayList<>();
-        BufferedReader reader = new BufferedReader(new FileReader(file));
+        BufferedReader reader = new BufferedReader(new FileReader(filePath));
         String line;
+
         while ((line = reader.readLine()) != null) {
             String[] parts = line.split(" ");
             String planet1 = parts[0];
@@ -57,28 +61,29 @@ public class Patrol {
         reader.close();
         return edges;
     }
-    public void patroledges() {
+    public void patrolEdges() {
         try {
-            List<Edge> edges = File("patrol.txt");
+            List<Edge> edges = EdgesFromFile("patrol.txt");
             Collections.sort(edges, Comparator.comparingInt(edge -> edge.cost));
+
             UnionFind uf = new UnionFind();
             List<Edge> mstEdges = new ArrayList<>();
-            int total = 0;
+            int totalCost = 0;
+
             for (Edge edge : edges) {
                 if (!uf.find(edge.planet1).equals(uf.find(edge.planet2))) {
                     uf.union(edge.planet1, edge.planet2);
-                    mstEdges.add(edge); 
-                    total += edge.cost; 
+                    mstEdges.add(edge);
+                    totalCost += edge.cost;
                 }
             }
-            printMSTResult(total, mstEdges);
-
+            printMSTResult(totalCost, mstEdges);
         } catch (IOException e) {
-            System.out.println("Error file not compatible or cant read");
+            System.out.println("Error: Could not read the file.");
         }
     }
-    private void printMSTResult(int total, List<Edge> mstEdges) {
-        System.out.println("Total Cost: " + total);
+    private void printMSTResult(int totalCost, List<Edge> mstEdges) {
+        System.out.println("Total Cost: " + totalCost);
         for (Edge edge : mstEdges) {
             System.out.println(edge);
         }
@@ -87,8 +92,4 @@ public class Patrol {
         Patrol patrol = new Patrol();
         patrol.patrolEdges();
     }
-    public String toString() {
-        return "(" + planet1 + ", " + planet2 + ", " + cost + ")";
-    }
-}
 }
