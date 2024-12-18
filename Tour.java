@@ -67,6 +67,10 @@ public class Tour {
     private int getEdgeCost(String from, String to) {
         return map.get(from).get(to);
     }
+    private int getEdgeCost(String from, String to) {
+        return map.get(from).getOrDefault(to, Integer.MAX_VALUE);
+    }
+    
     public static void main(String[] args) {
         Tour myTour = new Tour();
         myTour.quickTour("Earth");
