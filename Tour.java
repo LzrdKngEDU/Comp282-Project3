@@ -25,6 +25,7 @@ public class Tour {
                 if (!planets.contains(planetB)) planets.add(planetB);
             }
             scanner.close();
+            System.out.println("Map loaded: " + map);
         } catch (FileNotFoundException e) {
             System.err.println("File not found.");
             e.printStackTrace();
