@@ -8,3 +8,4 @@ Mars Jupiter 200
 Jupiter Venus 60
 Venus Neptune 400
 Neptune Mars 300
+        
