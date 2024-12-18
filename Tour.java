@@ -25,6 +25,7 @@ public class Tour {
                 if (!planets.contains(planetB)) planets.add(planetB);
             }
             scanner.close();
+            System.out.println("Map loaded: " + map);
         } catch (FileNotFoundException e) {
             System.err.println("File not found.");
             e.printStackTrace();
@@ -66,9 +67,6 @@ public class Tour {
     }
     private int getEdgeCost(String from, String to) {
         return map.get(from).get(to);
-    }
-    private int getEdgeCost(String from, String to) {
-        return map.get(from).getOrDefault(to, Integer.MAX_VALUE);
     }
     
     public static void main(String[] args) {
