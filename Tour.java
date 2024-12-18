@@ -55,20 +55,26 @@ public class Tour {
                 bTour.add(firstPlanet); 
             }
         } else {
-            for (String neighbor : map.get(currentPlanet).keySet()) {
+            for (String neighbor : map.getOrDefault(currentPlanet, Collections.emptyMap()).keySet()) {
                 if (!visited.contains(neighbor)) {
                     track(neighbor, visited, currentCost + getEdgeCost(currentPlanet, neighbor), firstPlanet,
-                              bTour, bCost);
+                          bTour, bCost);
                 }
             }
         }
         visited.remove(visited.size() - 1);
     }
     private int getEdgeCost(String from, String to) {
-        return map.get(from).get(to);
-    }
-    private int getEdgeCost(String from, String to) {
-        return map.get(from).getOrDefault(to, Integer.MAX_VALUE);
+        if (!map.containsKey(from)) {
+            System.err.println("Error: Planet '" + from + "' does not exist in the map.");
+            return Integer.MAX_VALUE; // Return a high cost to avoid selecting this edge
+        }
+        Map<String, Integer> neighbors = map.get(from);
+        if (!neighbors.containsKey(to)) {
+            System.err.println("Error: No direct path from '" + from + "' to '" + to + "'.");
+            return Integer.MAX_VALUE; // Return a high cost to avoid selecting this edge
+        }
+        return neighbors.get(to);
     }
     
     public static void main(String[] args) {
