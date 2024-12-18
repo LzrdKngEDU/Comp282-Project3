@@ -4,7 +4,7 @@ public class Patrol {
     public static class Edge {
         String planet1;
         String planet2;
-        int cost;
+        int  cost;
         public Edge(String planet1, String planet2, int cost) {
             this.planet1 = planet1;
             this.planet2 = planet2;

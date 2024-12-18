@@ -28,7 +28,6 @@ public class Driver {
                     testTour(scanner);
                     break;
                 case 4:
-                    System.out.println("Exiting... Safe travels in space!");
                     scanner.close();
                     return;
                 default:
